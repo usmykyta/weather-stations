@@ -6,8 +6,8 @@ Weather Stations is a sample project that demonstrates the integration of Larave
 
 You can access the Weather Stations application locally through your web browser. Once the Docker containers are running, you can use the following URLs:
 
-- **Laravel API**: `http://api.weather.local`
-- **Vue.js SPA**: `http://weather.local`
+- **Laravel API**: `https://api.weather.local`
+- **Vue.js SPA**: `https://weather.local`
 
 For local access, ensure that you have added the required entries to your system's hosts file. Refer to the installation for instructions on how to configure your hosts file.
 
