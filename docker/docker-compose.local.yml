@@ -1,0 +1,72 @@
+version: '3.8'
+
+networks:
+  weather-app-network:
+    driver: bridge
+    name: weather-app-network
+
+services:
+  weather-app-laravel:
+    container_name: weather-app-laravel
+    image: devilbox/php-fpm:8.2-work
+    tty: true
+    expose:
+      - 9000
+    volumes:
+      - ../services/api:/var/www/api
+      - ./local/services/supervisor/conf.d/:/etc/supervisor/custom.d/
+    working_dir: /var/www/api
+    networks:
+      - weather-app-network
+    command: "supervisord"
+
+  weather-app-vue:
+    container_name: weather-app-vue
+    image: node:latest
+    restart: on-failure
+    build:
+      context: .
+      dockerfile: ./local/services/node/Dockerfile
+    tty: true
+    volumes:
+      - ../services/spa:/var/www/spa
+    working_dir: /var/www/spa
+    networks:
+      - weather-app-network
+    depends_on:
+      - weather-app-laravel
+      - weather-app-node
+
+  weather-app-node:
+    container_name: weather-app-node
+    image: node:alpine
+    tty: true
+    restart: unless-stopped
+    volumes:
+      - ../services/spa:/var/www/spa
+    working_dir: /var/www/spa
+    networks:
+      - weather-app-network
+
+  weather-app-server:
+    container_name: weather-app-server
+    image: caddy:2.7-alpine
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - caddy_data:/data
+      - caddy_config:/config
+      - ../services/:/var/www/
+      - ./local/services/caddy/:/etc/caddy/
+    networks:
+      - weather-app-network
+    depends_on:
+      - weather-app-laravel
+      - weather-app-vue
+
+volumes:
+  caddy_data:
+  caddy_config:
+  mysql_data:
