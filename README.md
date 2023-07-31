@@ -13,7 +13,7 @@ For local access, ensure that you have added the required entries to your system
 
 **SSL Certificates:**
 
-Please note that for secure access (via HTTPS), you'll need to set up valid SSL certificates for `https://api.weather.local/` and `https://weather.local/`. Refer to the installation for more details on configuring SSL certificates.
+Please note that for secure access (via HTTPS), you'll need to set up valid SSL certificates for `https://api.weather.local` and `https://weather.local`. Refer to the installation for more details on configuring SSL certificates.
 
 ## Prerequisites
 
